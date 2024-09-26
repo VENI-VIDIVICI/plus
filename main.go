@@ -15,11 +15,11 @@ func init() {
 }
 
 func main() {
-	fmt.Println("hello, World!")
 	var env string
 	flag.StringVar(&env, "env", "", "加载 .env 文件，如 --env=testing 加载的是 .env.testing 文件")
 	flag.Parse()
 	config.InitConfig(env)
+	bootstrap.SetupDB()
 	router := gin.New()
 	bootstrap.SetupRouter(router)
 	err := router.Run(":" + config.Get("app.port"))
