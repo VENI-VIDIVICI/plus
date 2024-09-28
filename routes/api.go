@@ -1,11 +1,18 @@
 package routes
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/VENI-VIDIVICI/plus/app/http/controllers/api/v1/auth"
+	"github.com/gin-gonic/gin"
+)
 
-func RegiserRoutes(g *gin.Engine) {
+func RegisterAPIRoutes(g *gin.Engine) {
 	v1 := g.Group("v1")
 	{
-		v1.GET("ping", func(ctx *gin.Context) {
-		})
+		authGroup := v1.Group("auth")
+		{
+			suc := new(auth.SignupController)
+			authGroup.POST("/signup/phone/exist", suc.IsPhoneExit)
+			authGroup.POST("/signup/phone/exist", suc.IsEmailExit)
+		}
 	}
 }

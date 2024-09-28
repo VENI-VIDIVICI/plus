@@ -10,9 +10,10 @@ import (
 
 func SetupDB() {
 	// dsn := "root:123456@tcp(127.0.0.1:3308)/blog_plus"
-	dsn := fmt.Sprintf("%s:%s@tcp(%s)/%s", config.Get("db.mysql.username"),
-		config.Get("db.mysql.password"), config.Get("db.mysql.host"),
-		config.Get("db.mysql.pory"), config.Get("db.mysql.database"))
+	dsn := fmt.Sprintf("%v:%v@tcp(%v:%v)/%v", config.Get("database.mysql.username"),
+		config.Get("database.mysql.password"), config.Get("database.mysql.host"),
+		config.Get("database.mysql.port"), config.Get("database.mysql.database"))
 
+	fmt.Println(dsn)
 	database.Connect(dsn)
 }
