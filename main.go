@@ -21,6 +21,7 @@ func main() {
 	bootstrap.SetupLogger()
 	config.InitConfig(env)
 	bootstrap.SetupDB()
+	bootstrap.SetupRedis()
 	router := gin.New()
 	bootstrap.SetupRouter(router)
 	fmt.Println(config.Get("app.port"))
