@@ -17,10 +17,11 @@ type Captcha struct {
 
 var internalCaptcha *Captcha
 
-func NewCaptch() {
+func NewCaptch() *Captcha {
 	once.Do(func() {
 		internalCaptcha = InitCaptch()
 	})
+	return internalCaptcha
 }
 
 func InitCaptch() *Captcha {
@@ -36,8 +37,9 @@ func InitCaptch() *Captcha {
 	return captcha
 }
 
-func (c *Captcha) GenerateCaptcha() {
-	c.Base64Captcha.Generate()
+func (c *Captcha) GenerateCaptcha() (id string, b64s string, err error) {
+	id, b64s, _, err = c.Base64Captcha.Generate()
+	return id, b64s, err
 }
 
 func (c *Captcha) VerifyCaptcha(id string, answer string, clear bool) bool {
