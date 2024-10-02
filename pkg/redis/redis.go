@@ -14,17 +14,17 @@ type RedisWrap struct {
 	ctx    context.Context
 }
 
-var RedisInstance RedisWrap
+var RedisInstance *RedisWrap
 
 var once sync.Once
 
 func ConnectRedis(username, address, password string, db int) {
 	once.Do(func() {
-		NewClient(username, address, password, db)
+		RedisInstance = NewClient(username, address, password, db)
 	})
 }
 
-func NewClient(username, address, password string, db int) {
+func NewClient(username, address, password string, db int) *RedisWrap {
 	rds := &RedisWrap{}
 	rds.ctx = context.Background()
 	rds.client = *redis.NewClient(&redis.Options{
@@ -34,6 +34,7 @@ func NewClient(username, address, password string, db int) {
 	})
 	err := rds.Ping()
 	logger.LogIf(err)
+	return rds
 }
 func (r RedisWrap) Ping() error {
 	_, err := r.client.Ping(r.ctx).Result()
@@ -42,8 +43,8 @@ func (r RedisWrap) Ping() error {
 
 // Decr
 
-func (r RedisWrap) Set(name string, v interface{}, duration int) bool {
-	if err := r.client.Set(r.ctx, name, v, time.Duration(duration)).Err(); err != nil {
+func (r RedisWrap) Set(name string, v interface{}, duration time.Duration) bool {
+	if err := r.client.Set(r.ctx, name, v, duration).Err(); err != nil {
 		logger.ErrorString("Redis", "Set", err.Error())
 		return false
 	}
