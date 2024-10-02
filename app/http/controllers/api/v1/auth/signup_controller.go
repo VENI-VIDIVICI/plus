@@ -1,11 +1,10 @@
 package auth
 
 import (
-	"net/http"
-
 	v1 "github.com/VENI-VIDIVICI/plus/app/http/controllers/api/v1"
 	"github.com/VENI-VIDIVICI/plus/app/models/user"
 	"github.com/VENI-VIDIVICI/plus/app/requests"
+	"github.com/VENI-VIDIVICI/plus/pkg/response"
 	"github.com/gin-gonic/gin"
 )
 
@@ -19,7 +18,7 @@ func (sc *SignupController) IsPhoneExit(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{
+	response.JSON(c, gin.H{
 		"exist": user.IsPhoneExit(request.Phone),
 	})
 }
@@ -29,7 +28,7 @@ func (sc *SignupController) IsEmailExit(c *gin.Context) {
 	if ok := requests.Validate(&request, requests.SignupEmailExist, c); !ok {
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{
+	response.JSON(c, gin.H{
 		"exist": user.IsEmailExit(request.Email),
 	})
 }
