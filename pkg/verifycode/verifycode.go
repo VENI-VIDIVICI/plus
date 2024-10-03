@@ -31,7 +31,7 @@ func NewVerfiCode() *VerifyCode {
 	return internalVerfiCode
 }
 
-func (vc *VerifyCode) sendSMS(phone string) bool {
+func (vc *VerifyCode) SendSMS(phone string) bool {
 	// 获取验证码
 	code := vc.generateVerifyCode(phone)
 	// 方便本地验证

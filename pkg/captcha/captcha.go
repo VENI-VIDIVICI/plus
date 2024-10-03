@@ -42,9 +42,9 @@ func (c *Captcha) GenerateCaptcha() (id string, b64s string, err error) {
 	return id, b64s, err
 }
 
-func (c *Captcha) VerifyCaptcha(id string, answer string, clear bool) bool {
+func (c *Captcha) VerifyCaptcha(id string, answer string) bool {
 	if !app.IsProduction() && id == config.GetString("captcha.testing_key") {
 		return true
 	}
-	return c.Base64Captcha.Verify(id, answer, clear)
+	return c.Base64Captcha.Verify(id, answer, false)
 }
