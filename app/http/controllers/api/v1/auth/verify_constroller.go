@@ -35,6 +35,14 @@ func (ve *VerifyConstroller) SendUsingPhone(c *gin.Context) {
 	}
 }
 
-func (ve *VerifyConstroller) SendVerifyCode(c *gin.Context) {
-
+func (ve *VerifyConstroller) SendUsingEmail(c *gin.Context) {
+	data := requests.VerifyCodeEmailRequest{}
+	if ok := requests.Validate(data, requests.VerifyCodeEmail, c); !ok {
+		return
+	}
+	if err := verifycode.NewVerfiCode().SendEmail(data.Email); err != nil {
+		response.Abort500(c, "发送邮件失败")
+	} else {
+		response.Success(c)
+	}
 }
