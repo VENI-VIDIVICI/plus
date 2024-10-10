@@ -32,3 +32,45 @@ func (sc *SignupController) IsEmailExit(c *gin.Context) {
 		"exist": user.IsEmailExit(request.Email),
 	})
 }
+
+func (sc *SignupController) SignupUsingPhone(c *gin.Context) {
+	request := requests.SignupUsingPhoneRequest{}
+	if ok := requests.Validate(&request, requests.SignupUsingPhone, c); !ok {
+		return
+	}
+	//
+	user := user.User{
+		Name:     request.Name,
+		Phone:    request.Phone,
+		Password: request.Password,
+	}
+	err := user.Create()
+	if err != nil {
+		response.Error(c, err)
+		return
+	}
+	response.CreatedJSON(c, gin.H{
+		"data": user,
+	})
+}
+
+func (sc *SignupController) SignupUsingEmail(c *gin.Context) {
+	request := requests.SignupUsingEmailRequest{}
+	if ok := requests.Validate(&request, requests.SignupEmailExist, c); !ok {
+		return
+	}
+
+	user := user.User{
+		Name:     request.Name,
+		Email:    request.Email,
+		Password: request.Password,
+	}
+	err := user.Create()
+	if err != nil {
+		response.Error(c, err)
+		return
+	}
+	response.CreatedJSON(c, gin.H{
+		"data": user,
+	})
+}
