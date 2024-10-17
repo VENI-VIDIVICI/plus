@@ -21,6 +21,7 @@ func RegisterAPIRoutes(g *gin.Engine) {
 			authGroup.POST("/signup/using-email", suc.SignupUsingEmail)
 			lgc := new(auth.LoginController)
 			authGroup.POST("/login/using-phone", lgc.LoginByPhone)
+			authGroup.POST("/login/using-password", lgc.LoginByPassword)
 		}
 	}
 }

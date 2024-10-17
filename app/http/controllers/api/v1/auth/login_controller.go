@@ -29,3 +29,19 @@ func (lg *LoginController) LoginByPhone(c *gin.Context) {
 		"token": token,
 	})
 }
+
+func (lg *LoginController) LoginByPassword(c *gin.Context) {
+	request := requests.LoginByPasswordRequest{}
+	if ok := requests.Validate(request, requests.LoginByPassward, c); !ok {
+		return
+	}
+	user, err := auth.Attempt(request.LoginID, request.Password)
+	if err != nil {
+		response.BadRequest(c, err)
+		return
+	}
+	token := jwt2.NewJWT().IssueToken(user.GetStringID(), user.Name)
+	response.JSON(c, gin.H{
+		"token": token,
+	})
+}
