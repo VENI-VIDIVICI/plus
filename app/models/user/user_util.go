@@ -26,3 +26,25 @@ func (u *User) Create() error {
 	}
 	return nil
 }
+
+func GetByMulti(loginId string) User {
+	sql := "SELECT * FROM users WHERE phone = ? OR emial = ? OR name = ?"
+	var user User
+	database.DB.QueryRow(sql, loginId, loginId, loginId).Scan(&user)
+	return user
+}
+
+func GetPhone(phone string) User {
+	sql := "SELECT * FROM users WHERE phone = ?"
+	var user User
+	database.DB.QueryRow(sql, phone).Scan(&user)
+	return user
+}
+
+func (u *User) ComparePassword(passward string) bool {
+	return u.Password == passward
+}
+
+func (u *User) GetStringID() string {
+	return string(u.ID)
+}

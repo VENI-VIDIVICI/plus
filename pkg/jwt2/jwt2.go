@@ -42,6 +42,12 @@ type JWTCustomClaims struct {
 	jwtpkg.RegisteredClaims
 }
 
+func NewJWT() *JWT {
+	return &JWT{
+		SignKey:    []byte(config.GetString("app.key")),
+		MaxRefresh: time.Duration(config.GetInt64("jwt.max_refresh_time")) * time.Minute,
+	}
+}
 func (jwt *JWT) ParserToken(c *gin.Context) (*JWTCustomClaims, error) {
 	tokenStr, parseErr := jwt.getTokenFromHeader(c)
 	if parseErr != nil {
