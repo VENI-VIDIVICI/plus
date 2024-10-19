@@ -2,13 +2,16 @@ package routes
 
 import (
 	"github.com/VENI-VIDIVICI/plus/app/http/controllers/api/v1/auth"
+	"github.com/VENI-VIDIVICI/plus/app/http/middlewares"
 	"github.com/gin-gonic/gin"
 )
 
 func RegisterAPIRoutes(g *gin.Engine) {
 	v1 := g.Group("v1")
+	v1.Use(middlewares.LinitIP("200-H"))
 	{
 		authGroup := v1.Group("auth")
+		authGroup.Use(middlewares.LinitIP("1000-H"))
 		{
 			suc := new(auth.SignupController)
 			authGroup.POST("/signup/phone/exist", suc.IsPhoneExit)
