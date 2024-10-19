@@ -29,3 +29,17 @@ func AuthJWT() gin.HandlerFunc {
 		c.Next()
 	}
 }
+
+func AuthGuest() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		if len(ctx.GetHeader("Authorization")) > 0 {
+			_, err := jwt2.NewJWT().ParserToken(ctx)
+			if err != nil {
+				response.Unauthorized(ctx, "请用游客模式访问")
+				ctx.Abort()
+				return
+			}
+			ctx.Next()
+		}
+	}
+}
