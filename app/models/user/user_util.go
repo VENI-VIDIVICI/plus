@@ -48,3 +48,9 @@ func (u *User) ComparePassword(passward string) bool {
 func (u *User) GetStringID() string {
 	return string(u.ID)
 }
+
+func Get(idStr string) (userModel User) {
+	sql := "SELECT * FROM users WHERE id = ?"
+	database.DB.QueryRow(sql, idStr).Scan(&userModel)
+	return
+}
